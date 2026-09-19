@@ -1,0 +1,41 @@
+diff --git a/pywsus.py b/pywsus.py
+index baf02ab..7d1da39 100644
+--- a/pywsus.py
++++ b/pywsus.py
+@@ -266,8 +266,8 @@ class WSUSUpdateHandler:
+                     sha1=self.sha1, sha256=self.sha256,
+                     filename=self.executable_name, file_size=len(self.executable),
+                     command=html.escape(html.escape(command)),
+-                    url='http://{host}/{path}/{executable}'.format(
+-                        host=self.client_address, path=uuid.uuid4(),
++                    url='{base}/{path}/{executable}'.format(
++                        base=self.client_address.rstrip('/'), path=uuid.uuid4(),
+                         executable=self.executable_name),
+                     kb_number=self.kb_number,
+                     kb_title='')
+@@ -653,5 +653,7 @@ def parse_args():
+     core.add_argument('-p', '--port',       type=int, default=8530,
+                       help='Listening port (default: 8530).')
++    core.add_argument('--advertise-url', default=None,
++                      help='Base URL advertised to clients; defaults to http://HOST:PORT.')
+     core.add_argument('-e', '--executable', type=argparse.FileType('rb'), required=True,
+                       help='Microsoft-signed PE to serve (e.g. PsExec64.exe).')
+     core.add_argument('-c', '--command',    required=True,
+@@ -718,7 +720,7 @@ if __name__ == '__main__':
+ 
+     update_handler = WSUSUpdateHandler(
+         executable_file, executable_name,
+-        client_address=f'{args.host}:{args.port}')
++        client_address=(args.advertise_url or f'http://{args.host}:{args.port}'))
+ 
+     update_handler.set_filedigest()
+     update_handler.set_resources_xml(args.command)
+@@ -751,7 +753,7 @@ if __name__ == '__main__':
+ 
+     rotate_secs   = args.rotate * 3600 if args.rotate else 0
+     last_rotate   = time.time()
+-    client_addr   = f'{args.host}:{args.port}'
++    client_addr   = args.advertise_url or f'http://{args.host}:{args.port}'
+ 
+     old_settings = termios.tcgetattr(sys.stdin)
+     try:

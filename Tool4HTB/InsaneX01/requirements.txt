@@ -1,0 +1,5 @@
+beautifulsoup4==4.14.3
+cryptography==46.0.5
+ldap3==2.9.1
+minio==7.2.20
+requests==2.32.5
