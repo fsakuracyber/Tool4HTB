@@ -10,7 +10,6 @@ PSPY的な動きをするPythonスクリプト
 --interval=0.02
 
 ## 実行画面
-<img width="299" height="26" alt="image" src="https://github.com/user-attachments/assets/2b1fc5e3-cc2b-457a-b1f7-34c3d4b704bb" />
-
+<img width="410" height="34" alt="image" src="https://github.com/user-attachments/assets/076b6de3-e348-4ff4-aa96-52e34b9ec5eb" />
 
 
